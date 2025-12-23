@@ -23,11 +23,18 @@ import {
 
 type TabType = '地域项目价格' | '项目质保' | '好评返现' | '用户黑名单';
 
+// 统一使用截图所示的蓝色系风格
+// light: #F0F9FE (用户指定背景)
+// text: #0ea5e9 (明亮的蓝色，接近截图)
+// border: #bae6fd (浅蓝边框)
+// base: #0ea5e9 (选中时的深色背景)
+const COMMON_THEME = { base: '#0ea5e9', light: '#F0F9FE', border: '#bae6fd', text: '#0284c7' };
+
 const TAB_THEMES: Record<TabType, { base: string, light: string, border: string, text: string }> = {
-  '地域项目价格': { base: '#ff4d4f', light: '#fff1f0', border: '#ffa39e', text: '#cf1322' },
-  '项目质保': { base: '#faad14', light: '#fffbe6', border: '#ffe58f', text: '#d46b08' },
-  '好评返现': { base: '#1890ff', light: '#e6f7ff', border: '#91d5ff', text: '#096dd9' },
-  '用户黑名单': { base: '#52c41a', light: '#f6ffed', border: '#b7eb8f', text: '#389e0d' },
+  '地域项目价格': COMMON_THEME,
+  '项目质保': COMMON_THEME,
+  '好评返现': COMMON_THEME,
+  '用户黑名单': COMMON_THEME,
 };
 
 // --- 配置项 (严格对照图 1-4 还原) ---
@@ -295,11 +302,15 @@ const App = () => {
                 <th className="px-4 py-3 w-32 text-center sticky right-0 bg-white shadow-[-4px_0_10px_rgba(0,0,0,0.03)]">操作</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            {/* 增强表格分割线为 #cbd5e1 */}
+            <tbody className="divide-y divide-[#cbd5e1]">
               {data.map((row, idx) => (
                 <tr 
                   key={idx} 
-                  className={`group transition-colors text-[11px] h-10 ${idx % 2 === 1 ? 'bg-blue-50/30' : 'bg-white'} hover:bg-indigo-50/40`}
+                  className={`group transition-colors text-[11px] h-10 ${
+                    // 隔行变色调整为用户指定的浅蓝 #F0F9FE
+                    idx % 2 === 1 ? 'bg-[#F0F9FE]' : 'bg-white'
+                  } hover:bg-indigo-50/40`}
                 >
                   <td className="px-4 py-1 text-center border-r border-slate-100 text-slate-400">
                     {idx + 1}
@@ -323,7 +334,10 @@ const App = () => {
                       )}
                     </td>
                   ))}
-                  <td className={`px-4 py-1 text-center sticky right-0 shadow-[-4px_0_10px_rgba(0,0,0,0.03)] ${idx % 2 === 1 ? 'bg-[#fcfdfe]' : 'bg-white'} group-hover:bg-indigo-50/40 transition-colors`}>
+                  <td className={`px-4 py-1 text-center sticky right-0 shadow-[-4px_0_10px_rgba(0,0,0,0.03)] ${
+                    // 固定列背景也需要同步调整
+                    idx % 2 === 1 ? 'bg-[#F0F9FE]' : 'bg-white'
+                  } group-hover:bg-indigo-50/40 transition-colors`}>
                     <div className="flex justify-center gap-3">
                       {activeTab === '好评返现' || activeTab === '用户黑名单' ? (
                         <button className="text-blue-500 hover:text-blue-700 font-bold">审核</button>
