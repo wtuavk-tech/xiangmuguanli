@@ -112,13 +112,13 @@ const generateRows = (tab: TabType): any[] => {
 const NotificationBar = () => (
   <div className="flex items-center gap-4 mb-3 px-6 py-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700 rounded-xl shadow-lg overflow-hidden shrink-0">
     <div className="flex items-center gap-3 shrink-0">
-      <div className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+      <div className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm font-sans">
         <Bell size={10} /> 重要公告
       </div>
-      <span className="text-slate-400 text-xs">2025-11-19</span>
+      <span className="text-slate-400 text-xs font-mono">2025-11-19</span>
     </div>
     <div className="flex-1 overflow-hidden relative h-6 flex items-center">
-      <div className="whitespace-nowrap animate-[marquee_40s_linear_infinite] flex items-center gap-8 text-[13px] text-white font-medium">
+      <div className="whitespace-nowrap animate-[marquee_40s_linear_infinite] flex items-center gap-8 text-[13px] text-white font-medium font-sans">
         <span>📢 系统优化通知：业务订单后台已更新，当前导航已简化为 地域项目价格、项目质保、好评返现 及 用户黑名单 管理，请知悉。</span>
       </div>
     </div>
@@ -129,7 +129,7 @@ const NotificationBar = () => (
 const TabSelector = ({ activeTab, onSelect }: { activeTab: TabType, onSelect: (t: TabType) => void }) => {
   const tabs: TabType[] = ['地域项目价格', '项目质保', '好评返现', '用户黑名单'];
   return (
-    <div className="grid grid-cols-4 gap-4 mb-4">
+    <div className="grid grid-cols-4 gap-4 mb-4 font-sans">
       {tabs.map((tab) => {
         const theme = TAB_THEMES[tab];
         const isActive = activeTab === tab;
@@ -159,12 +159,12 @@ const DataOverview = ({ toggleFilters, showFilters, tab }: { toggleFilters: () =
     <div className="flex items-center gap-4 px-6 flex-1">
       <div className="flex items-center gap-2 mr-10 shrink-0">
         <Activity size={20} className="text-indigo-500" />
-        <span className="text-sm font-bold text-slate-800 uppercase tracking-tight">运营概览面板</span>
+        <span className="text-sm font-bold text-slate-800 uppercase tracking-tight font-sans">运营概览面板</span>
       </div>
       <div className="flex gap-16">
         {[['今日新增价格', '12', '#ef4444'], ['待审核返现', '85', '#334155'], ['黑名单总数', '1,240', '#334155'], ['系统预警', '0', '#22c55e']].map(([label, val, color]) => (
           <div key={label} className="flex flex-col">
-            <span className="text-[10px] text-slate-400 font-bold uppercase">{label}</span>
+            <span className="text-[10px] text-slate-400 font-bold uppercase font-sans">{label}</span>
             <span className="text-sm font-bold font-mono" style={{ color }}>{val}</span>
           </div>
         ))}
@@ -172,7 +172,7 @@ const DataOverview = ({ toggleFilters, showFilters, tab }: { toggleFilters: () =
     </div>
     <div 
       onClick={toggleFilters}
-      className="h-full px-6 bg-indigo-50 border-l border-slate-200 flex items-center gap-2 text-indigo-600 font-bold text-xs cursor-pointer hover:bg-indigo-100 transition-all select-none"
+      className="h-full px-6 bg-indigo-50 border-l border-slate-200 flex items-center gap-2 text-indigo-600 font-bold text-xs cursor-pointer hover:bg-indigo-100 transition-all select-none font-sans"
     >
       <Search size={14} />
       <span>点这高级筛选</span>
@@ -188,20 +188,20 @@ const SearchPanel = ({ tab, isVisible }: { tab: TabType, isVisible: boolean }) =
 
   const renderField = (field: string) => (
     <div key={field} className="flex items-center gap-2 min-w-[180px]">
-      <span className="text-[11px] text-slate-500 shrink-0 whitespace-nowrap">{field}</span>
+      <span className="text-[11px] text-slate-500 shrink-0 whitespace-nowrap font-sans">{field}</span>
       {field === '录入时间' || field === '申请时间' ? (
         <div className="flex items-center gap-1">
-           <select className="border border-slate-200 rounded h-7 px-1 text-[11px] outline-none bg-slate-50"><option>{field}</option></select>
-           <input type="text" placeholder="开始日期" className="w-20 border border-slate-200 rounded h-7 px-2 text-[10px] outline-none" />
+           <select className="border border-slate-200 rounded h-7 px-1 text-[11px] outline-none bg-slate-50 font-sans"><option>{field}</option></select>
+           <input type="text" placeholder="开始日期" className="w-20 border border-slate-200 rounded h-7 px-2 text-[10px] outline-none font-mono" />
            <span className="text-slate-300">至</span>
-           <input type="text" placeholder="结束日期" className="w-20 border border-slate-200 rounded h-7 px-2 text-[10px] outline-none" />
+           <input type="text" placeholder="结束日期" className="w-20 border border-slate-200 rounded h-7 px-2 text-[10px] outline-none font-mono" />
         </div>
       ) : field === '价格类型' || field === '入表状态' || field === '审核状态' || field === '名单类型' ? (
-        <select className="flex-1 border border-slate-200 rounded h-7 px-2 text-[11px] outline-none bg-slate-50 text-slate-600 cursor-pointer">
+        <select className="flex-1 border border-slate-200 rounded h-7 px-2 text-[11px] outline-none bg-slate-50 text-slate-600 cursor-pointer font-sans">
           <option>请选择</option>
         </select>
       ) : (
-        <input type="text" placeholder="请输入内容" className="flex-1 border border-slate-200 rounded h-7 px-3 text-[11px] outline-none focus:border-indigo-400 bg-slate-50" />
+        <input type="text" placeholder="请输入内容" className="flex-1 border border-slate-200 rounded h-7 px-3 text-[11px] outline-none focus:border-indigo-400 bg-slate-50 font-sans" />
       )}
     </div>
   );
@@ -214,8 +214,8 @@ const SearchPanel = ({ tab, isVisible }: { tab: TabType, isVisible: boolean }) =
         </div>
         
         <div className="flex gap-2 shrink-0 border-l border-slate-100 pl-6">
-          <button className="h-7 px-4 bg-[#1890ff] text-white rounded text-[11px] hover:bg-blue-600 shadow-sm transition-all active:scale-95">搜索</button>
-          <button className="h-7 px-4 bg-white border border-slate-200 text-slate-500 rounded text-[11px] hover:bg-slate-50 transition-all">重置</button>
+          <button className="h-7 px-4 bg-[#1890ff] text-white rounded text-[11px] hover:bg-blue-600 shadow-sm transition-all active:scale-95 font-sans">搜索</button>
+          <button className="h-7 px-4 bg-white border border-slate-200 text-slate-500 rounded text-[11px] hover:bg-slate-50 transition-all font-sans">重置</button>
         </div>
       </div>
     </div>
@@ -235,10 +235,10 @@ const BlacklistStats = () => (
         <div className={`absolute left-0 top-0 bottom-0 w-1 ${item.bar}`}></div>
         <div className="flex-1">
           <div className="flex items-baseline gap-2">
-            <span className="text-xs text-slate-500 font-bold">{item.label}</span>
-            <span className={`text-2xl font-black ${item.color}`}>{item.val}</span>
+            <span className="text-xs text-slate-500 font-bold font-sans">{item.label}</span>
+            <span className={`text-2xl font-black font-mono ${item.color}`}>{item.val}</span>
           </div>
-          <div className="text-[10px] text-slate-400 mt-1">{item.desc}</div>
+          <div className="text-[10px] text-slate-400 mt-1 font-sans">{item.desc}</div>
         </div>
       </div>
     ))}
@@ -267,7 +267,7 @@ const App = () => {
       {activeTab === '用户黑名单' && (
         <div className="flex gap-6 mb-2 px-2 shrink-0">
           {['名单管理', '审核管理', '命中记录'].map(sub => (
-            <button key={sub} className={`text-[12px] pb-1 font-bold transition-all ${sub === '审核管理' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-slate-400 hover:text-slate-600'}`}>
+            <button key={sub} className={`text-[12px] pb-1 font-bold transition-all font-sans ${sub === '审核管理' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-slate-400 hover:text-slate-600'}`}>
               {sub}
             </button>
           ))}
@@ -280,7 +280,7 @@ const App = () => {
           {config.buttons.map(btn => (
             <button 
               key={btn} 
-              className={`h-7 px-3 rounded text-[11px] font-bold flex items-center gap-1 transition-all shadow-sm text-white active:scale-95 ${
+              className={`h-7 px-3 rounded text-[11px] font-bold flex items-center gap-1 transition-all shadow-sm text-white active:scale-95 font-sans ${
                 btn === '新增市场价' || btn === '新增' ? 'bg-[#1890ff]' : btn === '上传excel' ? 'bg-emerald-500' : 'bg-blue-400'
               }`}
             >
@@ -294,7 +294,7 @@ const App = () => {
         <div className="overflow-auto flex-1">
           <table className="w-full text-left border-collapse min-w-[1600px]">
             <thead className="sticky top-0 z-20 bg-white border-b border-slate-200">
-              <tr className="text-[11px] font-bold text-slate-400 uppercase tracking-tight">
+              <tr className="text-[11px] font-bold text-slate-400 uppercase tracking-tight font-sans">
                 <th className="px-4 py-3 text-center w-16 border-r border-slate-100">序号</th>
                 {config.headers.map(h => (
                   <th key={h} className={`px-4 py-3 border-r border-slate-100 ${h.length > 5 ? 'min-w-[150px]' : 'min-w-[100px]'}`}>{h}</th>
@@ -312,33 +312,38 @@ const App = () => {
                     idx % 2 === 1 ? 'bg-[#F0F9FE]' : 'bg-white'
                   } hover:bg-indigo-50/40`}
                 >
-                  <td className="px-4 py-1 text-center border-r border-slate-100 text-slate-400">
+                  <td className="px-4 py-1 text-center border-r border-slate-100 text-slate-400 font-mono">
                     {idx + 1}
                   </td>
-                  {config.headers.map(h => (
-                    <td key={h} className={`px-4 py-1 border-r border-slate-100 truncate max-w-[300px] text-slate-600 ${h.includes('金额') || h.includes('价') ? 'text-center font-mono' : ''}`}>
-                      {h === '入表状态' ? (
-                        <div className={`w-8 h-4 rounded-full relative cursor-pointer transition-all ${row[h] ? 'bg-blue-500' : 'bg-slate-200'}`}>
-                          <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${row[h] ? 'right-0.5' : 'left-0.5'}`}></div>
-                        </div>
-                      ) : h === '名单类型' ? (
-                        <span className={`px-2 py-0.5 rounded text-[10px] border ${row[h] === '灰名单' ? 'bg-orange-50 text-orange-500 border-orange-200' : 'bg-red-50 text-red-500 border-red-200'}`}>{row[h]}</span>
-                      ) : h === '状态' ? (
-                        <span className={`px-2 py-0.5 rounded text-[10px] ${row[h] === '已通过' ? 'bg-emerald-50 text-emerald-500 border border-emerald-200' : 'bg-slate-50 text-slate-400 border border-slate-200'}`}>{row[h]}</span>
-                      ) : h === '审核状态' && activeTab === '好评返现' ? (
-                        <span className="text-blue-500 border border-blue-200 px-2 py-0.5 rounded bg-blue-50">申请</span>
-                      ) : h === '图片' ? (
-                        <ImageIcon size={14} className="text-slate-300 mx-auto" />
-                      ) : (
-                        row[h]
-                      )}
-                    </td>
-                  ))}
+                  {config.headers.map(h => {
+                    // 判断是否需要应用等宽字体：时间、日期、ID、单号、手机号、金额
+                    const isMono = h.includes('时间') || h.includes('日期') || h.includes('ID') || h.includes('id') || h.includes('号') || h.includes('金额') || h === '标准单价' || h === '结算价' || h === '促销折扣';
+                    
+                    return (
+                      <td key={h} className={`px-4 py-1 border-r border-slate-100 truncate max-w-[300px] text-slate-600 ${isMono ? 'font-mono' : 'font-sans'} ${h.includes('金额') || h.includes('价') ? 'text-center' : ''}`}>
+                        {h === '入表状态' ? (
+                          <div className={`w-8 h-4 rounded-full relative cursor-pointer transition-all ${row[h] ? 'bg-blue-500' : 'bg-slate-200'}`}>
+                            <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${row[h] ? 'right-0.5' : 'left-0.5'}`}></div>
+                          </div>
+                        ) : h === '名单类型' ? (
+                          <span className={`px-2 py-0.5 rounded text-[10px] border font-sans ${row[h] === '灰名单' ? 'bg-orange-50 text-orange-500 border-orange-200' : 'bg-red-50 text-red-500 border-red-200'}`}>{row[h]}</span>
+                        ) : h === '状态' ? (
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-sans ${row[h] === '已通过' ? 'bg-emerald-50 text-emerald-500 border border-emerald-200' : 'bg-slate-50 text-slate-400 border border-slate-200'}`}>{row[h]}</span>
+                        ) : h === '审核状态' && activeTab === '好评返现' ? (
+                          <span className="text-blue-500 border border-blue-200 px-2 py-0.5 rounded bg-blue-50 font-sans">申请</span>
+                        ) : h === '图片' ? (
+                          <ImageIcon size={14} className="text-slate-300 mx-auto" />
+                        ) : (
+                          row[h]
+                        )}
+                      </td>
+                    );
+                  })}
                   <td className={`px-4 py-1 text-center sticky right-0 shadow-[-4px_0_10px_rgba(0,0,0,0.03)] ${
                     // 固定列背景也需要同步调整
                     idx % 2 === 1 ? 'bg-[#F0F9FE]' : 'bg-white'
                   } group-hover:bg-indigo-50/40 transition-colors`}>
-                    <div className="flex justify-center gap-3">
+                    <div className="flex justify-center gap-3 font-sans">
                       {activeTab === '好评返现' || activeTab === '用户黑名单' ? (
                         <button className="text-blue-500 hover:text-blue-700 font-bold">审核</button>
                       ) : (
@@ -356,21 +361,21 @@ const App = () => {
         </div>
 
         {/* 还原底部分页组件风格 */}
-        <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-center gap-4 bg-slate-50/30 text-[11px]">
-          <span className="text-slate-400">共 156 条</span>
-          <select className="border border-slate-200 rounded h-6 px-1 outline-none text-[11px]"><option>20条/页</option></select>
+        <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-center gap-4 bg-slate-50/30 text-[11px] font-sans">
+          <span className="text-slate-400 font-mono">共 156 条</span>
+          <select className="border border-slate-200 rounded h-6 px-1 outline-none text-[11px] font-mono"><option>20条/页</option></select>
           <div className="flex items-center gap-1">
             <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white"><ChevronLeft size={12}/></button>
-            <button className="w-6 h-6 bg-blue-500 text-white rounded font-bold">1</button>
-            <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white">2</button>
-            <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white">3</button>
+            <button className="w-6 h-6 bg-blue-500 text-white rounded font-bold font-mono">1</button>
+            <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white font-mono">2</button>
+            <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white font-mono">3</button>
             <span className="text-slate-300 px-1">...</span>
-            <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white">14</button>
+            <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white font-mono">14</button>
             <button className="w-6 h-6 border border-slate-200 rounded flex items-center justify-center bg-white"><ChevronRight size={12}/></button>
           </div>
           <div className="flex items-center gap-1 text-slate-500">
             <span>前往</span>
-            <input type="number" defaultValue={1} className="w-8 h-6 border border-slate-200 rounded text-center outline-none bg-white" />
+            <input type="number" defaultValue={1} className="w-8 h-6 border border-slate-200 rounded text-center outline-none bg-white font-mono" />
             <span>页</span>
           </div>
         </div>
