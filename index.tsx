@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { 
@@ -159,11 +158,11 @@ const DataOverview = ({ toggleFilters, showFilters, tab }: { toggleFilters: () =
     <div className="flex items-center gap-4 px-6 flex-1">
       <div className="flex items-center gap-2 mr-10 shrink-0">
         <Activity size={20} className="text-indigo-500" />
-        <span className="text-sm font-bold text-slate-800 uppercase tracking-tight font-sans">运营概览面板</span>
+        <span className="text-sm font-bold text-slate-800 uppercase tracking-tight font-sans">数据概览</span>
       </div>
       <div className="flex gap-16">
         {[['今日新增价格', '12', '#ef4444'], ['待审核返现', '85', '#334155'], ['黑名单总数', '1,240', '#334155'], ['系统预警', '0', '#22c55e']].map(([label, val, color]) => (
-          <div key={label} className="flex flex-col">
+          <div key={label} className="flex items-center gap-2">
             <span className="text-[10px] text-slate-400 font-bold uppercase font-sans">{label}</span>
             <span className="text-sm font-bold font-mono" style={{ color }}>{val}</span>
           </div>
