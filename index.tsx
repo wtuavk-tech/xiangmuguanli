@@ -14,7 +14,10 @@ import {
   Eye,
   MessageCircle,
   Phone,
-  RefreshCw
+  RefreshCw,
+  ShieldAlert,
+  Sliders,
+  FileText
 } from 'lucide-react';
 
 // --- 类型定义 ---
@@ -23,19 +26,15 @@ type TabType = '地域项目价格' | '项目质保' | '好评返现' | '用户�
 
 // --- 配色常量 (参考截图) ---
 const THEME = {
-  primary: '#1890ff',     // 截图中的亮蓝色 (按钮、图标)
-  success: '#52c41a',     // 绿色 (业绩)
-  warning: '#faad14',     // 橙色 (待派单状态)
-  error: '#ff4d4f',       // 红色 (退款)
-  textMain: '#1f1f1f',    // 主文字
-  textSecondary: '#8c8c8c', // 次要文字
+  primary: '#1890ff',     // 截图中的亮蓝色
+  success: '#52c41a',     // 绿色
+  warning: '#faad14',     // 橙色
+  error: '#ff4d4f',       // 红色
   border: '#f0f0f0',      // 浅灰边框
-  bgBody: '#f0f2f5',      // 页面背景灰
-  bgWhite: '#ffffff',     // 卡片背景
-  tableHeader: '#fafafa'  // 表头背景
+  tableStripe: '#FFF0F0'  // 表格隔行底色
 };
 
-// --- 配置项 (保持不变) ---
+// --- 配置项 ---
 
 const TAB_CONFIGS: Record<TabType, { search: string[], headers: string[], buttons: string[] }> = {
   '地域项目价格': {
@@ -60,7 +59,7 @@ const TAB_CONFIGS: Record<TabType, { search: string[], headers: string[], button
   }
 };
 
-// --- Mock Data 生成 (保持不变) ---
+// --- Mock Data 生成 ---
 
 const generateRows = (tab: TabType): any[] => {
   const config = TAB_CONFIGS[tab];
@@ -108,7 +107,6 @@ const generateRows = (tab: TabType): any[] => {
 // --- 子组件 ---
 
 const NotificationBar = () => (
-  // 参考截图顶部样式：白色背景，圆角，蓝色标签，右侧日期
   <div className="flex items-center gap-3 mb-4 px-5 py-3 bg-white border border-slate-100 rounded-lg shadow-sm shrink-0">
     <div className="flex items-center gap-2 shrink-0">
       <div className="bg-[#1890ff] text-white text-[12px] px-3 py-1.5 rounded-[4px] flex items-center gap-1 font-bold shadow-sm shadow-blue-100">
@@ -139,75 +137,81 @@ const NotificationBar = () => (
   </div>
 );
 
-const DataOverview = ({ toggleFilters, showFilters, tab }: { toggleFilters: () => void, showFilters: boolean, tab: TabType }) => {
-  // 参考截图的数据概览样式：图标在左，大号数字颜色各异
-  // 截图映射：录单(Blue), 今日派单(Black), 今日业绩(Green), 收款率(Black), 退款(Red)
-  const stats = [
-    { label: '录单', val: '128', color: '#1890ff', unit: '' },      // Blue
-    { label: '今日派单', val: '42', color: '#1f1f1f', unit: '' },    // Black
-    { label: '今日业绩', val: '12850.0', color: '#52c41a', unit: '' }, // Green
-    { label: '收款率', val: '98.5', color: '#1f1f1f', unit: '%' },   // Black
-    { label: '退款', val: '450.5', color: '#ff4d4f', unit: '' }      // Red
-  ];
+// 新版导航栏 (卡片式)
+const NavigationTabs = ({ activeTab, onSelect }: { activeTab: TabType, onSelect: (t: TabType) => void }) => {
+  const tabs = [
+    { name: '地域项目价格', color: '#ff4d4f', icon: ShieldAlert, bg: 'bg-red-500', border: 'border-red-500' }, // 红
+    { name: '项目质保', color: '#eab308', icon: Bell, bg: 'bg-yellow-500', border: 'border-yellow-500' },      // 黄
+    { name: '好评返现', color: '#3b82f6', icon: Sliders, bg: 'bg-blue-500', border: 'border-blue-500' },      // 蓝
+    { name: '用户黑名单', color: '#22c55e', icon: FileText, bg: 'bg-green-500', border: 'border-green-500' },   // 绿
+  ] as const;
 
   return (
-    <div className="bg-white rounded-lg border border-slate-100 flex items-center shadow-sm h-[72px] mb-4 shrink-0 px-6 relative overflow-hidden">
-       {/* 左侧蓝色圆圈图标 */}
-      <div className="flex items-center gap-3 mr-12 shrink-0 border-r border-slate-100 pr-8 h-10">
-        <div className="w-9 h-9 rounded-full bg-[#1890ff] flex items-center justify-center text-white shadow-blue-200 shadow-md">
-          <Activity size={18} />
-        </div>
-        <span className="text-[15px] font-bold text-gray-800 tracking-tight">数据概览</span>
-      </div>
-      
-      {/* 统计数据 */}
-      <div className="flex items-center flex-1 justify-between max-w-4xl">
-        {stats.map((item, idx) => (
-          <div key={idx} className="flex flex-col items-center min-w-[100px]">
-            <span className="text-[12px] text-gray-400 mb-1 font-medium">{item.label}</span>
-            <div className="flex items-baseline gap-0.5">
-              <span className="text-[22px] font-bold font-mono tracking-tight" style={{ color: item.color }}>{item.val}</span>
-              {item.unit && <span className="text-[13px] font-bold text-gray-400 ml-0.5">{item.unit}</span>}
+    <div className="grid grid-cols-4 gap-4 mb-4 shrink-0 px-1 py-1">
+      {tabs.map((tab) => {
+        const isActive = activeTab === tab.name;
+        return (
+          <div 
+            key={tab.name}
+            onClick={() => onSelect(tab.name as TabType)}
+            className={`h-12 flex items-center justify-center gap-3 px-4 rounded-lg cursor-pointer transition-all border ${tab.border} bg-white ${
+              isActive ? 'shadow-sm scale-105 z-10' : 'hover:opacity-90'
+            }`}
+          >
+            <div className={`w-8 h-8 rounded-full ${tab.bg} flex items-center justify-center text-white shrink-0`}>
+              <tab.icon size={16} fill="currentColor" className="opacity-90"/>
             </div>
+            <span className={`text-[14px] font-bold ${isActive ? 'text-gray-800' : 'text-gray-500'}`}>{tab.name}</span>
           </div>
-        ))}
-      </div>
-
-      {/* 右侧高级筛选 */}
-      <div 
-        onClick={toggleFilters}
-        className="ml-auto flex flex-col items-center justify-center cursor-pointer text-gray-500 hover:text-[#1890ff] transition-all gap-1 group border-l border-slate-100 pl-8 h-10"
-      >
-        <div className="w-8 h-8 rounded-full bg-slate-50 group-hover:bg-blue-50 flex items-center justify-center text-[#1890ff] transition-colors">
-          <Search size={16} />
-        </div>
-        <span className="text-[11px] font-medium">高级筛选</span>
-      </div>
+        );
+      })}
     </div>
   );
 };
 
-const TabSelector = ({ activeTab, onSelect }: { activeTab: TabType, onSelect: (t: TabType) => void }) => {
-  const tabs: TabType[] = ['地域项目价格', '项目质保', '好评返现', '用户黑名单'];
+// 新版数据概览 (单行长条)
+const DataOverviewBar = ({ toggleFilters, showFilters }: { toggleFilters: () => void, showFilters: boolean }) => {
+  const stats = [
+    { label: '录单', val: '128', color: '#ff4d4f' },
+    { label: '今日派单', val: '42', color: '#3b82f6' },
+    { label: '今日业绩', val: '12850.0', color: '#22c55e' },
+    { label: '收款率', val: '98.5%', color: '#a855f7' },
+    { label: '退款', val: '450.5', color: '#f97316' }
+  ];
+
   return (
-    <div className="flex gap-1 mb-0 shrink-0 px-2">
-      {tabs.map((tab) => {
-        const isActive = activeTab === tab;
-        return (
-          <button
-            key={tab}
-            onClick={() => onSelect(tab)}
-            className={`px-6 py-3 text-[14px] font-bold rounded-t-lg transition-all relative top-[1px] ${
-              isActive 
-                ? 'bg-white text-[#1890ff] shadow-[0_-2px_5px_rgba(0,0,0,0.02)] border-t border-x border-slate-100 z-10' 
-                : 'bg-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50'
-            }`}
-          >
-            {tab}
-            {isActive && <div className="absolute top-0 left-0 w-full h-[2px] bg-[#1890ff] rounded-t-lg"></div>}
-          </button>
-        );
-      })}
+    <div className="bg-white rounded-lg border border-slate-200 shadow-sm px-4 py-3 mb-4 shrink-0 flex items-center justify-between gap-6">
+      {/* 左侧：图标 + 数据 */}
+      <div className="flex items-center flex-1 gap-6 overflow-hidden">
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="w-8 h-8 rounded-full bg-[#1890ff] flex items-center justify-center text-white">
+             <Activity size={18} />
+          </div>
+          <span className="text-[14px] font-bold text-gray-800">数据概览</span>
+        </div>
+        
+        <div className="w-px h-6 bg-gray-200 shrink-0 mx-2"></div>
+
+        <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
+          {stats.map((item, idx) => (
+             <div key={idx} className="flex items-baseline whitespace-nowrap gap-1">
+               <span className="text-[13px] text-gray-500">{item.label}</span>
+               <span className="text-[15px] font-bold font-mono" style={{ color: item.color }}>{item.val}</span>
+             </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 右侧：操作区 */}
+      <div className="flex items-center gap-4 shrink-0 pl-4 border-l border-gray-100">
+        <div 
+          onClick={toggleFilters}
+          className="flex items-center gap-1.5 cursor-pointer text-[#1890ff] hover:text-blue-700 transition-colors group"
+        >
+          <Search size={14} strokeWidth={2.5} className="group-hover:scale-110 transition-transform"/>
+          <span className="text-[13px] font-bold">点这高级筛选</span>
+        </div>
+      </div>
     </div>
   );
 };
@@ -247,17 +251,16 @@ const SearchPanel = ({ tab, isVisible }: { tab: TabType, isVisible: boolean }) =
   );
 };
 
-// --- 黑名单特有组件 (更新后: 单行展示) ---
+// --- 黑名单特有组件 (单行展示) ---
 const BlacklistStats = () => (
-  // 将文字和数字用一行展示，放在用户黑名单这一行的下面
-  <div className="flex gap-4 mb-4 shrink-0 px-2">
+  <div className="flex gap-4 mb-4 shrink-0 px-1">
     {[
       { label: '需复核数量', val: '44', color: 'text-red-500' },
       { label: '待审核数量', val: '3', color: 'text-[#1890ff]' },
       { label: '需复核灰名单', val: '0', color: 'text-orange-500' },
       { label: '总名单数量', val: '3480', color: 'text-slate-800' },
     ].map(item => (
-      <div key={item.label} className="bg-white px-4 py-3 rounded-lg shadow-sm border border-slate-100 flex items-center gap-3">
+      <div key={item.label} className="bg-white px-4 py-3 rounded-lg shadow-sm border border-slate-100 flex items-center gap-3 flex-1 min-w-[200px]">
          <span className="text-[13px] text-gray-500 font-bold">{item.label}</span>
          <span className={`text-xl font-bold font-mono tracking-tight ${item.color}`}>{item.val}</span>
       </div>
@@ -269,26 +272,28 @@ const App = () => {
   const [activeTab, setActiveTab] = useState<TabType>('地域项目价格');
   const [showFilters, setShowFilters] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 15;
 
   const config = TAB_CONFIGS[activeTab];
   const data = useMemo(() => generateRows(activeTab), [activeTab]);
 
   return (
-    <div className="h-screen bg-[#f0f2f5] p-5 flex flex-col overflow-hidden font-sans text-slate-800 antialiased selection:bg-blue-100">
+    <div className="h-screen bg-[#f0f2f5] p-5 flex flex-col overflow-hidden text-slate-800 antialiased selection:bg-blue-100">
       <NotificationBar />
       
-      <DataOverview showFilters={showFilters} toggleFilters={() => setShowFilters(!showFilters)} tab={activeTab} />
+      {/* 1. 导航板块 (卡片式) */}
+      <NavigationTabs activeTab={activeTab} onSelect={(t) => { setActiveTab(t); setCurrentPage(1); }} />
+
+      {/* 2. 数据概览板块 (单行长条) */}
+      <DataOverviewBar toggleFilters={() => setShowFilters(!showFilters)} showFilters={showFilters} />
+
+      {/* 搜索面板 */}
       <SearchPanel tab={activeTab} isVisible={showFilters} />
       
-      {/* 标签栏 */}
-      <TabSelector activeTab={activeTab} onSelect={(t) => { setActiveTab(t); setCurrentPage(1); }} />
-
-      {/* 黑名单统计数据 - 放在标签栏下方 */}
+      {/* 黑名单统计数据 */}
       {activeTab === '用户黑名单' && <BlacklistStats />}
 
-      <div className="bg-white rounded-b-lg rounded-tr-lg shadow-sm border border-slate-200 flex-1 flex flex-col overflow-hidden relative z-0">
-        {/* 工具栏 */}
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 flex-1 flex flex-col overflow-hidden relative z-0">
+        {/* 工具栏 (移除了部分冗余操作，因为新增按钮已移至数据概览，但保留导出等特定功能及刷新) */}
         <div className="px-5 py-3 border-b border-slate-100 flex justify-between items-center bg-white shrink-0">
           <div className="flex gap-3 items-center">
             {activeTab === '用户黑名单' && (
@@ -298,26 +303,18 @@ const App = () => {
                 ))}
               </div>
             )}
-            {config.buttons.map(btn => (
+             {/* 仅显示非“新增”类按钮，或者为了兼容性保留“上传” */}
+            {config.buttons.filter(b => !b.includes('新增')).map(btn => (
               <button 
                 key={btn} 
-                className={`h-8 px-4 rounded-[4px] text-[12px] font-bold flex items-center gap-1.5 transition-all active:scale-95 ${
-                  btn.includes('上传') 
-                    ? 'bg-white border border-slate-200 text-slate-600 hover:text-[#1890ff] hover:border-[#1890ff] shadow-sm' 
-                    : 'bg-[#1890ff] text-white hover:bg-blue-600 shadow-sm shadow-blue-100'
-                }`}
+                className="h-8 px-4 rounded-[4px] text-[12px] font-bold flex items-center gap-1.5 transition-all active:scale-95 bg-white border border-slate-200 text-slate-600 hover:text-[#1890ff] hover:border-[#1890ff] shadow-sm"
               >
-                {btn.includes('新增') && <Plus size={14} strokeWidth={3}/>}
                 {btn.includes('上传') && <Upload size={14} />}
                 {btn}
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-2 text-[12px] text-gray-400 bg-slate-50 px-3 py-1 rounded-full font-mono">
-            <span>数据更新:</span>
-            <span className="text-gray-600">2025-11-19 12:30:00</span>
-            <RefreshCw size={10} className="ml-1 cursor-pointer hover:rotate-180 transition-all"/>
-          </div>
+          {/* 已移除数据更新时间 */}
         </div>
 
         {/* 表格 */}
@@ -325,11 +322,11 @@ const App = () => {
           <table className="w-full text-left border-collapse min-w-[1600px]">
             <thead className="sticky top-0 z-20 bg-[#fafafa]">
               <tr className="text-[12px] font-bold text-gray-700">
-                <th className="px-4 py-3.5 text-center w-16 border-b border-r border-slate-100 bg-[#fafafa]">序号</th>
+                <th className="px-4 py-3.5 text-center w-16 border-b border-r border-slate-100 border-b-[#cbd5e1] bg-[#fafafa]">序号</th>
                 {config.headers.map(h => (
-                  <th key={h} className={`px-4 py-3.5 border-b border-r border-slate-100 bg-[#fafafa] whitespace-nowrap ${h.length > 5 ? 'min-w-[150px]' : 'min-w-[100px]'}`}>{h}</th>
+                  <th key={h} className={`px-4 py-3.5 border-b border-r border-slate-100 border-b-[#cbd5e1] bg-[#fafafa] whitespace-nowrap ${h.length > 5 ? 'min-w-[150px]' : 'min-w-[100px]'}`}>{h}</th>
                 ))}
-                <th className="px-4 py-3.5 w-32 text-center sticky right-0 bg-[#fafafa] border-b border-l border-slate-100 shadow-[-4px_0_8px_rgba(0,0,0,0.01)]">操作</th>
+                <th className="px-4 py-3.5 w-32 text-center sticky right-0 bg-[#fafafa] border-b border-l border-slate-100 border-b-[#cbd5e1] shadow-[-4px_0_8px_rgba(0,0,0,0.01)]">操作</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -337,16 +334,17 @@ const App = () => {
                 <tr 
                   key={idx} 
                   // 明显的分割线: border-b-[#cbd5e1]
-                  className="group transition-colors text-[12px] h-12 hover:bg-[#e6f7ff] border-b border-[#cbd5e1]"
+                  // 隔行填充: even:bg-[#FFF0F0]
+                  className="group transition-colors text-[12px] h-12 even:bg-[#FFF0F0] hover:bg-blue-50/50 border-b border-[#cbd5e1]"
                 >
-                  <td className="px-4 py-1 text-center border-r border-slate-50 text-gray-400 font-mono group-hover:border-slate-100">
+                  <td className="px-4 py-1 text-center border-r border-slate-50/50 text-gray-400 font-mono group-hover:border-slate-100/50">
                     {idx + 1}
                   </td>
                   {config.headers.map(h => {
                     const isMono = h.includes('时间') || h.includes('日期') || h.includes('ID') || h.includes('id') || h.includes('号') || h.includes('金额') || h === '标准单价' || h === '结算价' || h === '促销折扣';
                     
                     return (
-                      <td key={h} className={`px-4 py-1 border-r border-slate-50 group-hover:border-slate-100 truncate max-w-[300px] text-gray-600 ${isMono ? 'font-mono' : 'font-sans'} ${h.includes('金额') || h.includes('价') ? 'text-center' : ''}`}>
+                      <td key={h} className={`px-4 py-1 border-r border-slate-50/50 group-hover:border-slate-100/50 truncate max-w-[300px] text-gray-600 ${isMono ? 'font-mono' : 'font-sans'} ${h.includes('金额') || h.includes('价') ? 'text-center' : ''}`}>
                         {h === '入表状态' ? (
                           <div className="flex items-center gap-2">
                              <div className={`w-2 h-2 rounded-full ${row[h] ? 'bg-emerald-500' : 'bg-slate-300'}`}></div>
@@ -374,7 +372,8 @@ const App = () => {
                       </td>
                     );
                   })}
-                  <td className="px-4 py-1 text-center sticky right-0 bg-white border-l border-slate-100 shadow-[-4px_0_8px_rgba(0,0,0,0.01)] group-hover:bg-[#e6f7ff] transition-colors">
+                  <td className="px-4 py-1 text-center sticky right-0 bg-transparent border-l border-slate-100 shadow-[-4px_0_8px_rgba(0,0,0,0.01)] group-hover:bg-blue-50/50 transition-colors">
+                    {/* 背景设为 transparent 以透出 tr 的背景色 (白色或淡红色) */}
                     <div className="flex justify-center gap-2 font-sans">
                       {/* 操作列逻辑优化 */}
                       {(activeTab === '地域项目价格' || activeTab === '项目质保') ? (
