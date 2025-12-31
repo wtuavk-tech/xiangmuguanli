@@ -403,24 +403,36 @@ const App = () => {
         </div>
 
         {/* 分页栏 */}
-        <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-between bg-white shrink-0">
-          <div className="text-[12px] text-gray-500">
-             显示第 <span className="font-bold text-gray-800">1</span> 到 <span className="font-bold text-gray-800">15</span> 条，共 <span className="font-bold text-gray-800">128</span> 条
+        <div className="px-6 py-3 border-t border-slate-100 flex items-center justify-center gap-5 bg-white shrink-0">
+          <span className="text-[13px] text-gray-500">共 100 条</span>
+          <select className="border border-slate-200 rounded px-2 py-1 outline-none text-[13px] text-gray-600 bg-white hover:border-[#1890ff] transition-colors cursor-pointer">
+            <option>20条/页</option>
+            <option>50条/页</option>
+            <option>100条/页</option>
+          </select>
+          <div className="flex items-center gap-1">
+             <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-gray-400 hover:text-[#1890ff] transition-colors">
+               <ChevronLeft size={16} />
+             </button>
+             
+             <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-gray-600 text-[13px] transition-colors">1</button>
+             <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-gray-600 text-[13px] transition-colors">2</button>
+             <button className="w-8 h-8 flex items-center justify-center rounded text-[#1890ff] font-bold text-[13px] transition-colors">3</button>
+             <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-gray-600 text-[13px] transition-colors">4</button>
+             <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-gray-600 text-[13px] transition-colors">5</button>
+             
+             <button className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-gray-400 hover:text-[#1890ff] transition-colors">
+               <ChevronRight size={16} />
+             </button>
           </div>
-          <div className="flex items-center gap-3">
-             <select className="border border-slate-200 rounded px-2 py-1 outline-none text-[12px] text-gray-600 bg-white hover:border-[#1890ff] transition-colors"><option>20条/页</option></select>
-             <div className="flex items-center gap-1">
-                <button className="w-7 h-7 flex items-center justify-center rounded border border-slate-200 bg-white text-gray-400 hover:border-[#1890ff] hover:text-[#1890ff] disabled:opacity-50"><ChevronLeft size={14}/></button>
-                <button className="w-7 h-7 flex items-center justify-center rounded bg-[#1890ff] text-white font-bold text-[12px] shadow-sm shadow-blue-200">1</button>
-                <button className="w-7 h-7 flex items-center justify-center rounded border border-slate-200 bg-white text-gray-600 hover:border-[#1890ff] hover:text-[#1890ff] text-[12px]">2</button>
-                <button className="w-7 h-7 flex items-center justify-center rounded border border-slate-200 bg-white text-gray-600 hover:border-[#1890ff] hover:text-[#1890ff] text-[12px]">3</button>
-                <span className="text-gray-300 text-[10px] px-1">•••</span>
-                <button className="w-7 h-7 flex items-center justify-center rounded border border-slate-200 bg-white text-gray-600 hover:border-[#1890ff] hover:text-[#1890ff] text-[12px]">8</button>
-                <button className="w-7 h-7 flex items-center justify-center rounded border border-slate-200 bg-white text-gray-400 hover:border-[#1890ff] hover:text-[#1890ff]"><ChevronRight size={14}/></button>
-             </div>
-             <div className="flex items-center gap-2 text-[12px] text-gray-400 ml-2">
-               前往 <input type="number" defaultValue={1} className="w-10 h-7 border border-slate-200 rounded text-center outline-none focus:border-[#1890ff] text-gray-600 font-mono" /> 页
-             </div>
+          <div className="flex items-center gap-2 text-[13px] text-gray-500">
+            <span>前往</span>
+            <input 
+              type="number" 
+              defaultValue={3} 
+              className="w-12 h-7 border border-slate-200 rounded text-center outline-none focus:border-[#1890ff] text-gray-600 font-mono" 
+            />
+            <span>页</span>
           </div>
         </div>
       </div>
