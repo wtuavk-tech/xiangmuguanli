@@ -17,7 +17,8 @@ import {
   RefreshCw,
   ShieldAlert,
   Sliders,
-  FileText
+  FileText,
+  BarChart3
 } from 'lucide-react';
 
 // --- 类型定义 ---
@@ -185,7 +186,7 @@ const DataOverviewBar = ({ toggleFilters, showFilters }: { toggleFilters: () => 
       <div className="flex items-center flex-1 gap-6 overflow-hidden">
         <div className="flex items-center gap-2 shrink-0">
           <div className="w-8 h-8 rounded-full bg-[#1890ff] flex items-center justify-center text-white">
-             <Activity size={18} />
+             <BarChart3 size={18} />
           </div>
           <span className="text-[14px] font-bold text-gray-800">数据概览</span>
         </div>
@@ -195,8 +196,8 @@ const DataOverviewBar = ({ toggleFilters, showFilters }: { toggleFilters: () => 
         <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
           {stats.map((item, idx) => (
              <div key={idx} className="flex items-baseline whitespace-nowrap gap-1">
-               <span className="text-[13px] text-gray-500">{item.label}</span>
-               <span className="text-[15px] font-bold font-mono" style={{ color: item.color }}>{item.val}</span>
+               <span className="text-[12px] text-gray-500">{item.label}</span>
+               <span className="text-[20px] font-bold font-mono" style={{ color: item.color }}>{item.val}</span>
              </div>
           ))}
         </div>
