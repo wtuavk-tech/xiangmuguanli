@@ -181,7 +181,7 @@ const DataOverviewBar = ({ toggleFilters, showFilters }: { toggleFilters: () => 
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 shadow-sm px-4 py-3 mb-4 shrink-0 flex items-center justify-between gap-6">
+    <div className="bg-white rounded-lg border border-slate-200 shadow-sm px-4 h-[44px] mb-4 shrink-0 flex items-center justify-between gap-6">
       {/* 左侧：图标 + 数据 */}
       <div className="flex items-center flex-1 gap-6 overflow-hidden">
         <div className="flex items-center gap-2 shrink-0">
