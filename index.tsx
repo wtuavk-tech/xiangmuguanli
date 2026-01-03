@@ -155,7 +155,7 @@ const NavigationTabs = ({ activeTab, onSelect }: { activeTab: TabType, onSelect:
           <div 
             key={tab.name}
             onClick={() => onSelect(tab.name as TabType)}
-            className={`h-12 flex items-center justify-center gap-3 px-4 rounded-lg cursor-pointer transition-all border ${tab.border} bg-white ${
+            className={`h-[44px] flex items-center justify-center gap-3 px-4 rounded-lg cursor-pointer transition-all border ${tab.border} bg-white ${
               isActive ? 'shadow-sm scale-105 z-10' : 'hover:opacity-90'
             }`}
           >
